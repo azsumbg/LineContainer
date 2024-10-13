@@ -43,13 +43,12 @@ namespace lines
 			void push_front(LINE element);
 			bool delete_data(size_t index);
 			void shrink();
-			bool distance_sort(POINT MyPoint);
+			void distance_sort(POINT MyPoint);
 
 			LINE& operator[] (size_t index) const;
 			bool operator()(size_t index, LINE element); //insert element at position
 	};
 
-
-
+	typedef LINECONTAINER Container;
 
 }

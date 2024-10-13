@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "LineContainer.h"
+#include <cstdlib>
 
 lines::LINECONTAINER::LINECONTAINER(size_t lenght) :max_size{ lenght }, m_array_ptr{ new LINE[lenght]{} }
 {
@@ -100,9 +101,40 @@ void lines::LINECONTAINER::shrink()
 				next.ex = 0;
 				next.ey = 0;
 
-				next_push_back_pos = index + i;
+				next_push_back_pos = (size_t)(index + i);
 				
 				not_finished = true;
+			}
+		}
+	}
+}
+void lines::LINECONTAINER::distance_sort(POINT MyPoint)
+{
+	bool finished = false;
+	while (!finished)
+	{
+		finished = true;
+
+		for (int i = 0; i < end_position; i++)
+		{
+			float x_distance1 = std::abs(MyPoint.x - LINE( *(m_array_ptr + i) ).x);
+			float ex_distance1 = std::abs(MyPoint.x - LINE(*(m_array_ptr + i)).ex);
+			float distance1{};
+			if (x_distance1 >= ex_distance1)distance1 = ex_distance1;
+			else distance1 = x_distance1;
+
+			float x_distance2 = std::abs(MyPoint.x - LINE(*(m_array_ptr + i + 1)).x);
+			float ex_distance2 = std::abs(MyPoint.x - LINE(*(m_array_ptr + i + 1)).ex);
+			float distance2{};
+			if (x_distance2 >= ex_distance2)distance1 = ex_distance2;
+			else distance2 = x_distance2;
+
+			if (distance2 < distance1)
+			{
+				finished = false;
+				LINE temp = *(m_array_ptr + i + 1);
+				*(m_array_ptr + i + 1) = *(m_array_ptr + i);
+				*(m_array_ptr + i) = temp;
 			}
 		}
 	}
